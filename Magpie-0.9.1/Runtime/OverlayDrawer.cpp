@@ -165,6 +165,13 @@ static std::vector<UINT> GenerateTimelineColors() {
 
 	return result;
 }
+UINT GetDpiForWindow7(HWND hWnd) {
+	HDC hdc = GetDC(hWnd);
+	int dpiX = GetDeviceCaps(hdc, LOGPIXELSX);
+	int dpiY = GetDeviceCaps(hdc, LOGPIXELSY);
+	ReleaseDC(hWnd, hdc);
+	return dpiX;
+}  
 
 bool OverlayDrawer::Initialize() {
 	_imguiImpl.reset(new ImGuiImpl());
@@ -175,8 +182,8 @@ bool OverlayDrawer::Initialize() {
 
 	ImGuiIO& io = ImGui::GetIO();
 	
-	_dpiScale = GetDpiForWindow(App::Get().GetHwndHost()) / 96.0f;
-
+	//_dpiScale = GetDpiForWindow(App::Get().GetHwndHost()) / 96.0f;
+	_dpiScale = GetDpiForWindow7(App::Get().GetHwndHost()) / 96.0f;
 	ImGui::StyleColorsDark();
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowRounding = 6;
