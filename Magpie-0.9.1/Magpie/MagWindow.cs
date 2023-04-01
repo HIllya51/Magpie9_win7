@@ -92,7 +92,7 @@ namespace Magpie {
 					Logger.Warn(e, "未找到 Runtime.dll");
 
 					// 显式加载 Runtime.dll，而不是通过 DllImport
-					if (NativeMethods.LoadLibrary("Runtime.dll") == IntPtr.Zero) {
+					if (NativeMethods.LoadLibrary("MagpieRT.dll") == IntPtr.Zero) {
 						Logger.Warn($"LoadLibrary 失败\n\tLastErrorCode={Marshal.GetLastWin32Error()}");
 					}
 
