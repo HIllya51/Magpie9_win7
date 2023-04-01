@@ -86,15 +86,15 @@ namespace Magpie {
 
 			ShowAllCaptureMethods(Settings.Default.DebugShowAllCaptureMethods);
 
-			if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 19041)) {
-				// Desktop Duplication 要求 v2004
-				cbbCaptureMethod.Items.RemoveAt(1);
-				if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 18362)) {
-					// Graphics Capture 要求 v1903
-					cbbCaptureMethod.Items.RemoveAt(0);
-				}
-			}
-
+			//if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 19041)) {
+			//	// Desktop Duplication 要求 v2004
+			//	cbbCaptureMethod.Items.RemoveAt(1);
+			//	if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 18362)) {
+			//		// Graphics Capture 要求 v1903
+			//		cbbCaptureMethod.Items.RemoveAt(0);
+			//	}
+			//}
+			
 			// 捕获模式选择项对应的值存在 Tag 属性里
 			bool found = false;
 			foreach (object i in cbbCaptureMethod.Items) {

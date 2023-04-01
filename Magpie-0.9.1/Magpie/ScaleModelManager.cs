@@ -1,8 +1,11 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+//using System.Text.Json;
+//using System.Text.Json.Nodes;
 using System.Threading;
 using System.Windows;
 using System.Windows.Resources;
@@ -68,26 +71,41 @@ namespace Magpie {
 
 			try {
 				// 解析缩放配置
-				scaleModels = JsonNode.Parse(
-					json,
-					new JsonNodeOptions { PropertyNameCaseInsensitive = false },
-					new JsonDocumentOptions {
-						CommentHandling = JsonCommentHandling.Skip,
-						AllowTrailingCommas = true
-					}
-				)?.AsArray().Select(model => {
-					if (model == null) {
+				
+				var jsonArray = JArray.Parse(json);
+				scaleModels = jsonArray.Select(model => {
+					var name = model.Value<string>("name");
+					var effects = model.Value<JToken>("effects");
+					if (name == null || effects == null) {
 						throw new Exception("json 非法");
 					}
-
-					JsonNode name = model["name"] ?? throw new Exception("未找到 name 字段");
-					JsonNode effects = model["effects"] ?? throw new Exception("未找到 effects 字段");
-
 					return new ScaleModel {
-						Name = name.GetValue<string>(),
-						Effects = effects.ToJsonString()
+						Name = name,
+						Effects = effects.ToString(Formatting.None)
 					};
 				}).ToArray();
+
+
+				//scaleModels = JsonNode.Parse(
+				//	json,
+				//	new JsonNodeOptions { PropertyNameCaseInsensitive = false },
+				//	new JsonDocumentOptions {
+				//		CommentHandling = JsonCommentHandling.Skip,
+				//		AllowTrailingCommas = true
+				//	}
+				//)?.AsArray().Select(model => {
+				//	if (model == null) {
+				//		throw new Exception("json 非法");
+				//	}
+
+				//	JsonNode name = model["name"] ?? throw new Exception("未找到 name 字段");
+				//	JsonNode effects = model["effects"] ?? throw new Exception("未找到 effects 字段");
+
+				//	return new ScaleModel {
+				//		Name = name.GetValue<string>(),
+				//		Effects = effects.ToJsonString()
+				//	};
+				//}).ToArray();
 
 				if (scaleModels == null || scaleModels.Length == 0) {
 					throw new Exception("解析 json 失败");

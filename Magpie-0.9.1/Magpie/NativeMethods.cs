@@ -175,7 +175,10 @@ namespace Magpie {
 		public static string[] GetAllGraphicsAdapters() {
 			string delimiter = @"/$@\";
 			string result = PtrToUTF8String(GetAllGraphicsAdaptersNative(delimiter))!;
-			return result.Split(delimiter, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+			//return result.Split(delimiter, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+			var delimiters = new string[] { @"/$@\" };
+			return result.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 		}
 
 		public static string? Run(

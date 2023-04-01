@@ -90,7 +90,7 @@ namespace Magpie {
 			InitNLog();
 			SetLogLevel(Settings.Default.LoggingLevel);
 
-			Logger.Info($"程序启动\n\t进程 ID：{Environment.ProcessId}\n\tMagpie 版本：{APP_VERSION}\n\tOS 版本：{Environment.OSVersion.Version}");
+			//Logger.Info($"程序启动\n\t进程 ID：{Environment.ProcessId}\n\tMagpie 版本：{APP_VERSION}\n\tOS 版本：{Environment.OSVersion.Version}");
 
 			if (!string.IsNullOrEmpty(Settings.Default.CultureName)) {
 				Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture =
@@ -163,7 +163,7 @@ namespace Magpie {
 				mutex.ReleaseMutex();
 			}
 
-			Logger.Info($"程序关闭\n\t进程 ID：{Environment.ProcessId}");
+			//Logger.Info($"程序关闭\n\t进程 ID：{Environment.ProcessId}");
 		}
 	}
 }

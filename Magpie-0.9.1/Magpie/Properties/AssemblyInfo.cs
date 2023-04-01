@@ -41,6 +41,6 @@ using System.Windows;
 )]
 
 
-// 提示编译器只支持 Windows，从而消除 CA1416 警告
-// 因为 GenerateAssemblyInfo 设为 false，因此需要显式设置此属性
-[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
+//// 提示编译器只支持 Windows，从而消除 CA1416 警告
+//// 因为 GenerateAssemblyInfo 设为 false，因此需要显式设置此属性
+//[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
