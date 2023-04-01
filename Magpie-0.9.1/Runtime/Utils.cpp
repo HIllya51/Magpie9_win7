@@ -65,7 +65,9 @@ bool Utils::ReadFile(const wchar_t* fileName, std::vector<BYTE>& result) {
 	extendedParams.lpSecurityAttributes = nullptr;
 	extendedParams.hTemplateFile = nullptr;
 
-	ScopedHandle hFile(SafeHandle(CreateFile2(fileName, GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, &extendedParams)));
+	//ScopedHandle hFile(SafeHandle(CreateFile2(fileName, GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, &extendedParams)));
+	 
+	ScopedHandle hFile(SafeHandle(CreateFileW(fileName, GENERIC_READ, FILE_SHARE_READ,nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL| FILE_FLAG_SEQUENTIAL_SCAN, nullptr)));
 
 	if (!hFile) {
 		Logger::Get().Error("打开文件失败");
