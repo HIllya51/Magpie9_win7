@@ -309,6 +309,7 @@ std::string EffectCacheManager::GetHash(
 	std::string_view source,
 	const std::map<std::string, std::variant<float, int>>* inlineParams
 ) {
+	return "hello";
 	std::string str;
 	str.reserve(source.size() + 128);
 	str = source;
@@ -334,6 +335,7 @@ std::string EffectCacheManager::GetHash(
 }
 
 std::string EffectCacheManager::GetHash(std::string& source, const std::map<std::string, std::variant<float, int>>* inlineParams) {
+	return "hello";
 	size_t originSize = source.size();
 
 	source.reserve(originSize + 128);

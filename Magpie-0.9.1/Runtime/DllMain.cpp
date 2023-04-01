@@ -68,12 +68,12 @@ API_DECLSPEC BOOL WINAPI Initialize(
 	if (!App::Get().Initialize(hInst)) {
 		return FALSE;
 	}
-
+	/*
 	// 初始化 Hasher
 	if (!Utils::Hasher::Get().Initialize()) {
 		return FALSE;
 	}
-
+	*/
 	return TRUE;
 }
 
