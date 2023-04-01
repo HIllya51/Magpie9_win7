@@ -23,7 +23,7 @@
 #define NOCLIPBOARD
 #define NOCOLOR
 #define NODRAWTEXT
-#define NOMB
+//#define NOMB
 #define NOMEMMGR
 #define NOMETAFILE
 #define NOOPENFILE
