@@ -342,7 +342,8 @@ bool Utils::ShowSystemCursor(bool value) {
 			return true;
 		}();
 
-		result = initialized ? (bool)MagShowSystemCursor(value) : false;
+		result = initialized ? (bool)ShowCursor(value) : false;
+		//result = initialized ? (bool)MagShowSystemCursor(value) : false;
 	}
 
 	if (result && value) {

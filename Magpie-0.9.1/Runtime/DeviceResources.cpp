@@ -85,7 +85,8 @@ bool DeviceResources::Initialize() {
 	UINT flag = 0;
 #endif // _DEBUG
 
-	HRESULT hr = CreateDXGIFactory2(flag, IID_PPV_ARGS(_dxgiFactory.put()));
+	//HRESULT hr = CreateDXGIFactory2(flag, IID_PPV_ARGS(_dxgiFactory.put()));
+	HRESULT hr = CreateDXGIFactory1(IID_PPV_ARGS(_dxgiFactory.put()));
 	if (FAILED(hr)) {
 		return false;
 	}
