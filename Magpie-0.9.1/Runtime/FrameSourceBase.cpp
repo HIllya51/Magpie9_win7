@@ -9,18 +9,18 @@
 FrameSourceBase::~FrameSourceBase() {
 	HWND hwndSrc = App::Get().GetHwndSrc();
 
-	// 还原窗口圆角
-	if (_roundCornerDisabled) {
-		_roundCornerDisabled = false;
+	//// 还原窗口圆角
+	//if (_roundCornerDisabled) {
+	//	_roundCornerDisabled = false;
 
-		INT attr = DWMWCP_DEFAULT;
-		HRESULT hr = DwmSetWindowAttribute(hwndSrc, DWMWA_WINDOW_CORNER_PREFERENCE, &attr, sizeof(attr));
-		if (FAILED(hr)) {
-			Logger::Get().ComError("取消禁用窗口圆角失败", hr);
-		} else {
-			Logger::Get().Info("已取消禁用窗口圆角");
-		}
-	}
+	//	INT attr = DWMWCP_DEFAULT;
+	//	HRESULT hr = DwmSetWindowAttribute(hwndSrc, DWMWA_WINDOW_CORNER_PREFERENCE, &attr, sizeof(attr));
+	//	if (FAILED(hr)) {
+	//		Logger::Get().ComError("取消禁用窗口圆角失败", hr);
+	//	} else {
+	//		Logger::Get().Info("已取消禁用窗口圆角");
+	//	}
+	//}
 
 	// 还原窗口大小调整
 	if (_windowResizingDisabled) {
@@ -64,24 +64,24 @@ bool FrameSourceBase::Initialize() {
 		}
 	}
 
-	// 禁用窗口圆角
-	if (_HasRoundCornerInWin11()) {
-		const auto& version = Utils::GetOSVersion();
-		bool isWin11 = Utils::CompareVersion(
-			version.dwMajorVersion, version.dwMinorVersion,
-			version.dwBuildNumber, 10, 0, 22000) >= 0;
+	//// 禁用窗口圆角
+	//if (_HasRoundCornerInWin11()) {
+	//	const auto& version = Utils::GetOSVersion();
+	//	bool isWin11 = Utils::CompareVersion(
+	//		version.dwMajorVersion, version.dwMinorVersion,
+	//		version.dwBuildNumber, 10, 0, 22000) >= 0;
 
-		if (isWin11) {
-			INT attr = DWMWCP_DONOTROUND;
-			HRESULT hr = DwmSetWindowAttribute(hwndSrc, DWMWA_WINDOW_CORNER_PREFERENCE, &attr, sizeof(attr));
-			if (FAILED(hr)) {
-				Logger::Get().ComError("禁用窗口圆角失败", hr);
-			} else {
-				Logger::Get().Info("已禁用窗口圆角");
-				_roundCornerDisabled = true;
-			}
-		}
-	}
+	//	if (isWin11) {
+	//		INT attr = DWMWCP_DONOTROUND;
+	//		HRESULT hr = DwmSetWindowAttribute(hwndSrc, DWMWA_WINDOW_CORNER_PREFERENCE, &attr, sizeof(attr));
+	//		if (FAILED(hr)) {
+	//			Logger::Get().ComError("禁用窗口圆角失败", hr);
+	//		} else {
+	//			Logger::Get().Info("已禁用窗口圆角");
+	//			_roundCornerDisabled = true;
+	//		}
+	//	}
+	//}
 
 	return true;
 }
