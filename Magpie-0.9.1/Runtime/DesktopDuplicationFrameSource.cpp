@@ -241,7 +241,7 @@ bool DesktopDuplicationFrameSource::_InitializeDdpD3D(HANDLE hSharedTex) {
 	}
 
 	D3D_FEATURE_LEVEL featureLevels[] = {
-		D3D_FEATURE_LEVEL_11_1,
+		//D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0
 	};
 	UINT nFeatureLevels = ARRAYSIZE(featureLevels);
@@ -261,7 +261,7 @@ bool DesktopDuplicationFrameSource::_InitializeDdpD3D(HANDLE hSharedTex) {
 	);
 
 	if (FAILED(hr)) {
-		Logger::Get().ComError("D3D11CreateDevice 失败", hr);
+		Logger::Get().ComError("D3D11CreateDevice 失败2", hr);
 		return false;
 	}
 

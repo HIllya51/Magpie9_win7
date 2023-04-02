@@ -82,7 +82,7 @@ void GPUTimer::OnEndEffects() {
 }
 
 template<typename T>
-static T GetQueryData(ID3D11DeviceContext3* d3dDC, ID3D11Query* query) {
+static T GetQueryData(ID3D11DeviceContext* d3dDC, ID3D11Query* query) {
 	T data{};
 	while (S_OK != d3dDC->GetData(query, &data, sizeof(data), 0)) {
 		Sleep(0);

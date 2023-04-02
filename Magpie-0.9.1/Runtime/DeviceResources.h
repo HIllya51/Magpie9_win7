@@ -34,14 +34,14 @@ public:
 	bool CompileShader(std::string_view hlsl, const char* entryPoint,
 		ID3DBlob** blob, const char* sourceName = nullptr, ID3DInclude* include = nullptr, const std::vector<std::pair<std::string, std::string>>& macros = {});
 
-	ID3D11Device3* GetD3DDevice() const noexcept { return _d3dDevice.get(); }
+	ID3D11Device* GetD3DDevice() const noexcept { return _d3dDevice.get(); }
 	D3D_FEATURE_LEVEL GetFeatureLevel() const noexcept { return _featureLevel; }
-	ID3D11DeviceContext3* GetD3DDC() const noexcept { return _d3dDC.get(); }
+	ID3D11DeviceContext* GetD3DDC() const noexcept { return _d3dDC.get(); }
 	IDXGISwapChain4* GetSwapChain() const noexcept { return _swapChain.get(); };
 	ID3D11Texture2D* GetBackBuffer() const noexcept { return _backBuffer.get(); }
 	IDXGIFactory1* GetDXGIFactory() const noexcept { return _dxgiFactory.get(); }
-	IDXGIDevice4* GetDXGIDevice() const noexcept { return _dxgiDevice.get(); }
-	IDXGIAdapter3* GetGraphicsAdapter() const noexcept { return _graphicsAdapter.get(); }
+	IDXGIDevice1* GetDXGIDevice() const noexcept { return _dxgiDevice.get(); }
+	IDXGIAdapter1* GetGraphicsAdapter() const noexcept { return _graphicsAdapter.get(); }
 
 	void BeginFrame();
 
@@ -51,11 +51,11 @@ private:
 	bool _CreateSwapChain();
 
 	winrt::com_ptr<IDXGIFactory1> _dxgiFactory;
-	winrt::com_ptr<IDXGIDevice4> _dxgiDevice;
+	winrt::com_ptr<IDXGIDevice1> _dxgiDevice;
 	winrt::com_ptr<IDXGISwapChain4> _swapChain;
-	winrt::com_ptr<IDXGIAdapter3> _graphicsAdapter;
-	winrt::com_ptr<ID3D11Device3> _d3dDevice;
-	winrt::com_ptr<ID3D11DeviceContext3> _d3dDC;
+	winrt::com_ptr<IDXGIAdapter1> _graphicsAdapter;
+	winrt::com_ptr<ID3D11Device> _d3dDevice;
+	winrt::com_ptr<ID3D11DeviceContext> _d3dDC;
 
 	Utils::ScopedHandle _frameLatencyWaitableObject;
 	bool _supportTearing = false;

@@ -11,28 +11,37 @@ static inline void LogAdapter(const DXGI_ADAPTER_DESC1& adapterDesc) {
 		adapterDesc.VendorId, adapterDesc.DeviceId, StrUtils::UTF16ToUTF8(adapterDesc.Description)));
 }
 
-static winrt::com_ptr<IDXGIAdapter3> ObtainGraphicsAdapter(IDXGIFactory1* dxgiFactory, int adapterIdx) {
+static winrt::com_ptr<IDXGIAdapter1> ObtainGraphicsAdapter(IDXGIFactory1* dxgiFactory, int adapterIdx) {
 	winrt::com_ptr<IDXGIAdapter1> adapter;
 
 	if (adapterIdx >= 0) {
 		HRESULT hr = dxgiFactory->EnumAdapters1(adapterIdx, adapter.put());
+		Logger::Get().Error(fmt::format("EnumAdapters1:{}", hr));
 		if (SUCCEEDED(hr)) {
 			DXGI_ADAPTER_DESC1 desc;
 			HRESULT hr = adapter->GetDesc1(&desc);
 			if (FAILED(hr)) {
+				Logger::Get().Error(fmt::format("ObtainGraphicsAdapter:{}",hr));
 				return nullptr;
 			}
 
 			LogAdapter(desc);
-			return adapter.try_as<IDXGIAdapter3>();
+			return adapter.try_as<IDXGIAdapter1>();
 		}
 	}
-
 	// 枚举查找第一个支持 D3D11 的图形适配器
 	for (UINT adapterIndex = 0;
-		SUCCEEDED(dxgiFactory->EnumAdapters1(adapterIndex, adapter.put()));
+		1;
 		++adapterIndex
 	) {
+		auto hr1 = dxgiFactory->EnumAdapters1(adapterIndex, adapter.put());
+		Logger::Get().Error(fmt::format("EnumAdapters1:{}", hr1));
+		if (SUCCEEDED(hr1)) {
+
+		}
+		else {
+			break;
+		}
 		DXGI_ADAPTER_DESC1 desc;
 		HRESULT hr = adapter->GetDesc1(&desc);
 		if (FAILED(hr)) {
@@ -44,7 +53,7 @@ static winrt::com_ptr<IDXGIAdapter3> ObtainGraphicsAdapter(IDXGIFactory1* dxgiFa
 		}
 
 		D3D_FEATURE_LEVEL featureLevels[] = {
-			D3D_FEATURE_LEVEL_11_1,
+			//D3D_FEATURE_LEVEL_11_1,
 			D3D_FEATURE_LEVEL_11_0
 		};
 		UINT nFeatureLevels = ARRAYSIZE(featureLevels);
@@ -63,7 +72,10 @@ static winrt::com_ptr<IDXGIAdapter3> ObtainGraphicsAdapter(IDXGIFactory1* dxgiFa
 		);
 		if (SUCCEEDED(hr)) {
 			LogAdapter(desc);
-			return adapter.try_as<IDXGIAdapter3>();
+			return adapter.try_as<IDXGIAdapter1>();
+		}
+		else {
+			Logger::Get().Error(fmt::format("ObtainGraphicsAdapter:{}", hr));
 		}
 	}
 
@@ -75,7 +87,7 @@ static winrt::com_ptr<IDXGIAdapter3> ObtainGraphicsAdapter(IDXGIFactory1* dxgiFa
 	//	return nullptr;
 	//}
 
-	return adapter.try_as<IDXGIAdapter3>();
+	return adapter.try_as<IDXGIAdapter1>();
 }
 
 bool DeviceResources::Initialize() {
@@ -115,7 +127,7 @@ bool DeviceResources::Initialize() {
 	}
 
 	D3D_FEATURE_LEVEL featureLevels[] = {
-		D3D_FEATURE_LEVEL_11_1,
+		//D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0
 	};
 	UINT nFeatureLevels = ARRAYSIZE(featureLevels);
@@ -142,7 +154,7 @@ bool DeviceResources::Initialize() {
 	);
 
 	if (FAILED(hr)) {
-		Logger::Get().ComError("D3D11CreateDevice 失败", hr);
+		Logger::Get().ComError("D3D11CreateDevice 失败1", hr);
 		return false;
 	}
 
@@ -160,19 +172,19 @@ bool DeviceResources::Initialize() {
 	}
 	Logger::Get().Info(fmt::format("已创建 D3D Device\n\t功能级别：{}", fl));
 
-	_d3dDevice = d3dDevice.try_as<ID3D11Device3>();
+	_d3dDevice = d3dDevice.try_as<ID3D11Device>();
 	if (!_d3dDevice) {
 		Logger::Get().Error("获取 ID3D11Device1 失败");
 		return false;
 	}
 
-	_d3dDC = d3dDC.try_as<ID3D11DeviceContext3>();
+	_d3dDC = d3dDC.try_as<ID3D11DeviceContext>();
 	if (!_d3dDC) {
 		Logger::Get().Error("获取 ID3D11DeviceContext1 失败");
 		return false;
 	}
 
-	_dxgiDevice = _d3dDevice.try_as<IDXGIDevice4>();
+	_dxgiDevice = _d3dDevice.try_as<IDXGIDevice1>();
 	if (!_dxgiDevice) {
 		Logger::Get().Error("获取 IDXGIDevice 失败");
 		return false;
@@ -301,7 +313,9 @@ bool DeviceResources::_CreateSwapChain() {
 	auto sd0 = convert(sd, App::Get().GetHwndHost());
 	// Now you can use sd instead of sd1 in your CreateSwapChain call
 
+
 	winrt::com_ptr<IDXGISwapChain> dxgiSwapChain = nullptr;
+	 
 	HRESULT hr = _dxgiFactory->CreateSwapChain(
 		_d3dDevice.get(),
 		&sd0,
@@ -312,6 +326,10 @@ bool DeviceResources::_CreateSwapChain() {
 		// associate the swap chain with the window
 		hr = _dxgiFactory->MakeWindowAssociation(App::Get().GetHwndHost(), DXGI_MWA_NO_ALT_ENTER);
 	}
+	else {
+		Logger::Get().ComError("创建交换链失败", hr);
+		return false;
+	}
 	/*winrt::com_ptr<IDXGISwapChain1> dxgiSwapChain = nullptr;
 	HRESULT hr = _dxgiFactory->CreateSwapChainForHwnd(
 		_d3dDevice.get(),
@@ -320,11 +338,11 @@ bool DeviceResources::_CreateSwapChain() {
 		nullptr,
 		nullptr,
 		dxgiSwapChain.put()
-	);*/
+	);
 	if (FAILED(hr)) {
 		Logger::Get().ComError("创建交换链失败", hr);
 		return false;
-	}
+	}*/
 
 	_swapChain = dxgiSwapChain.try_as<IDXGISwapChain4>();
 	if (!_swapChain) {
