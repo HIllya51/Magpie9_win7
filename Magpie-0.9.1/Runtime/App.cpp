@@ -143,8 +143,8 @@ void App::_RunMessageLoop() {
 	}
 }
 
-winrt::com_ptr<IWICImagingFactory2> App::GetWICImageFactory() {
-	static winrt::com_ptr<IWICImagingFactory2> wicImgFactory;
+winrt::com_ptr<IWICImagingFactory> App::GetWICImageFactory() {
+	static winrt::com_ptr<IWICImagingFactory> wicImgFactory;
 
 	if (wicImgFactory == nullptr) {
 		HRESULT hr = CoCreateInstance(

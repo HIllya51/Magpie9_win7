@@ -57,13 +57,13 @@ bool Utils::GetWindowFrameRect(HWND hWnd, RECT& result) {
 bool Utils::ReadFile(const wchar_t* fileName, std::vector<BYTE>& result) {
 	Logger::Get().Info(StrUtils::Concat("读取文件：", StrUtils::UTF16ToUTF8(fileName)));
 
-	CREATEFILE2_EXTENDED_PARAMETERS extendedParams = {};
-	extendedParams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
-	extendedParams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
-	extendedParams.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
-	extendedParams.dwSecurityQosFlags = SECURITY_ANONYMOUS;
-	extendedParams.lpSecurityAttributes = nullptr;
-	extendedParams.hTemplateFile = nullptr;
+	//CREATEFILE2_EXTENDED_PARAMETERS extendedParams = {};
+	//extendedParams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
+	//extendedParams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
+	//extendedParams.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
+	//extendedParams.dwSecurityQosFlags = SECURITY_ANONYMOUS;
+	//extendedParams.lpSecurityAttributes = nullptr;
+	//extendedParams.hTemplateFile = nullptr;
 
 	//ScopedHandle hFile(SafeHandle(CreateFile2(fileName, GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, &extendedParams)));
 	 

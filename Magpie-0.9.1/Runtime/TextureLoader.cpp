@@ -702,7 +702,7 @@ HRESULT CreateDDSTextureFromFileEx(
 }
 
 winrt::com_ptr<ID3D11Texture2D> LoadImg(const wchar_t* fileName) {
-	winrt::com_ptr<IWICImagingFactory2> factory = App::Get().GetWICImageFactory();
+	winrt::com_ptr<IWICImagingFactory> factory = App::Get().GetWICImageFactory();
 	if (!factory) {
 		Logger::Get().Error("GetWICImageFactory 失败");
 		return nullptr;

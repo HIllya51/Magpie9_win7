@@ -80,7 +80,7 @@ public:
 		_errorMsg = errorMsg;
 	}
 
-	winrt::com_ptr<IWICImagingFactory2> GetWICImageFactory();
+	winrt::com_ptr<IWICImagingFactory> GetWICImageFactory();
 
 	// 注册消息回调，回调函数如果不阻断消息应返回空
 	UINT RegisterWndProcHandler(std::function<std::optional<LRESULT>(HWND, UINT, WPARAM, LPARAM)> handler);
