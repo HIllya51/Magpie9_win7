@@ -257,7 +257,25 @@ void DeviceResources::EndFrame() {
 		_swapChain->Present(1, 0);
 	}
 }
-
+DXGI_SWAP_CHAIN_DESC convert(DXGI_SWAP_CHAIN_DESC1& sd1,HWND hwnd) { 
+	DXGI_SWAP_CHAIN_DESC sd = {};
+	sd.BufferDesc.Width = sd1.Width;
+	sd.BufferDesc.Height = sd1.Height;
+	sd.BufferDesc.RefreshRate.Numerator = 60;   // set your desired refresh rate
+	sd.BufferDesc.RefreshRate.Denominator = 1;
+	sd.BufferDesc.Format = sd1.Format;
+	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	sd.SampleDesc.Count = sd1.SampleDesc.Count;
+	sd.SampleDesc.Quality = sd1.SampleDesc.Quality;
+	sd.BufferUsage = sd1.BufferUsage;
+	sd.BufferCount = sd1.BufferCount;
+	sd.OutputWindow = hwnd;
+	sd.Windowed = TRUE;
+	sd.SwapEffect = sd1.SwapEffect;
+	sd.Flags = sd1.Flags;
+	return sd;
+}
 bool DeviceResources::_CreateSwapChain() {
 	const RECT& hostWndRect = App::Get().GetHostWndRect();
 	const Config& config = App::Get().GetConfig();
@@ -279,8 +297,22 @@ bool DeviceResources::_CreateSwapChain() {
 	// 只要显卡支持始终启用 DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING
 	sd.Flags = (_supportTearing ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0)
 		| DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT;
+	 
+	auto sd0 = convert(sd, App::Get().GetHwndHost());
+	// Now you can use sd instead of sd1 in your CreateSwapChain call
 
-	winrt::com_ptr<IDXGISwapChain1> dxgiSwapChain = nullptr;
+	winrt::com_ptr<IDXGISwapChain> dxgiSwapChain = nullptr;
+	HRESULT hr = _dxgiFactory->CreateSwapChain(
+		_d3dDevice.get(),
+		&sd0,
+		dxgiSwapChain.put()
+	);
+
+	if (SUCCEEDED(hr)) {
+		// associate the swap chain with the window
+		hr = _dxgiFactory->MakeWindowAssociation(App::Get().GetHwndHost(), DXGI_MWA_NO_ALT_ENTER);
+	}
+	/*winrt::com_ptr<IDXGISwapChain1> dxgiSwapChain = nullptr;
 	HRESULT hr = _dxgiFactory->CreateSwapChainForHwnd(
 		_d3dDevice.get(),
 		App::Get().GetHwndHost(),
@@ -288,7 +320,7 @@ bool DeviceResources::_CreateSwapChain() {
 		nullptr,
 		nullptr,
 		dxgiSwapChain.put()
-	);
+	);*/
 	if (FAILED(hr)) {
 		Logger::Get().ComError("创建交换链失败", hr);
 		return false;
