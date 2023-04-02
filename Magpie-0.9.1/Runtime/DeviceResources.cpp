@@ -11,7 +11,7 @@ static inline void LogAdapter(const DXGI_ADAPTER_DESC1& adapterDesc) {
 		adapterDesc.VendorId, adapterDesc.DeviceId, StrUtils::UTF16ToUTF8(adapterDesc.Description)));
 }
 
-static winrt::com_ptr<IDXGIAdapter3> ObtainGraphicsAdapter(IDXGIFactory4* dxgiFactory, int adapterIdx) {
+static winrt::com_ptr<IDXGIAdapter3> ObtainGraphicsAdapter(IDXGIFactory1* dxgiFactory, int adapterIdx) {
 	winrt::com_ptr<IDXGIAdapter1> adapter;
 
 	if (adapterIdx >= 0) {
@@ -67,13 +67,13 @@ static winrt::com_ptr<IDXGIAdapter3> ObtainGraphicsAdapter(IDXGIFactory4* dxgiFa
 		}
 	}
 
-	// 回落到 Basic Render Driver Adapter（WARP）
-	// https://docs.microsoft.com/en-us/windows/win32/direct3darticles/directx-warp
-	HRESULT hr = dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&adapter));
-	if (FAILED(hr)) {
-		Logger::Get().ComError("创建 WARP 设备失败", hr);
-		return nullptr;
-	}
+	//// 回落到 Basic Render Driver Adapter（WARP）
+	//// https://docs.microsoft.com/en-us/windows/win32/direct3darticles/directx-warp
+	//HRESULT hr = dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&adapter));
+	//if (FAILED(hr)) {
+	//	Logger::Get().ComError("创建 WARP 设备失败", hr);
+	//	return nullptr;
+	//}
 
 	return adapter.try_as<IDXGIAdapter3>();
 }
@@ -94,10 +94,10 @@ bool DeviceResources::Initialize() {
 	// 检查可变帧率支持
 	BOOL supportTearing = FALSE;
 
-	hr = _dxgiFactory->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING, &supportTearing, sizeof(supportTearing));
-	if (FAILED(hr)) {
-		Logger::Get().ComWarn("CheckFeatureSupport 失败", hr);
-	}
+	//hr = _dxgiFactory->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING, &supportTearing, sizeof(supportTearing));
+	//if (FAILED(hr)) {
+	//	Logger::Get().ComWarn("CheckFeatureSupport 失败", hr);
+	//}
 	_supportTearing = !!supportTearing;
 
 	Logger::Get().Info(fmt::format("可变刷新率支持：{}", supportTearing ? "是" : "否"));

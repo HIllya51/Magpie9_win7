@@ -39,7 +39,7 @@ public:
 	ID3D11DeviceContext3* GetD3DDC() const noexcept { return _d3dDC.get(); }
 	IDXGISwapChain4* GetSwapChain() const noexcept { return _swapChain.get(); };
 	ID3D11Texture2D* GetBackBuffer() const noexcept { return _backBuffer.get(); }
-	IDXGIFactory5* GetDXGIFactory() const noexcept { return _dxgiFactory.get(); }
+	IDXGIFactory1* GetDXGIFactory() const noexcept { return _dxgiFactory.get(); }
 	IDXGIDevice4* GetDXGIDevice() const noexcept { return _dxgiDevice.get(); }
 	IDXGIAdapter3* GetGraphicsAdapter() const noexcept { return _graphicsAdapter.get(); }
 
@@ -50,7 +50,7 @@ public:
 private:
 	bool _CreateSwapChain();
 
-	winrt::com_ptr<IDXGIFactory5> _dxgiFactory;
+	winrt::com_ptr<IDXGIFactory1> _dxgiFactory;
 	winrt::com_ptr<IDXGIDevice4> _dxgiDevice;
 	winrt::com_ptr<IDXGISwapChain4> _swapChain;
 	winrt::com_ptr<IDXGIAdapter3> _graphicsAdapter;

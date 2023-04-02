@@ -46,7 +46,7 @@ static winrt::com_ptr<IDXGIOutput1> GetDXGIOutput(HMONITOR hMonitor) {
 
 	// 未找到则在所有图形适配器上查找
 	winrt::com_ptr<IDXGIAdapter1> adapter;
-	IDXGIFactory5* dxgiFactory = dr.GetDXGIFactory();
+	IDXGIFactory1* dxgiFactory = dr.GetDXGIFactory();
 	for (UINT adapterIndex = 0;
 		SUCCEEDED(dxgiFactory->EnumAdapters1(adapterIndex,adapter.put()));
 		++adapterIndex
