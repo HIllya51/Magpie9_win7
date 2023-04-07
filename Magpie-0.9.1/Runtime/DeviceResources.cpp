@@ -258,7 +258,7 @@ winrt::com_ptr<ID3D11Texture2D> DeviceResources::CreateTexture2D(
 }
 
 void DeviceResources::BeginFrame() {
-	WaitForSingleObjectEx(_frameLatencyWaitableObject.get(), 1000, TRUE);
+	//WaitForSingleObjectEx(_frameLatencyWaitableObject.get(), 1000, TRUE);
 	_d3dDC->ClearState();
 }
 
@@ -269,56 +269,32 @@ void DeviceResources::EndFrame() {
 		_swapChain->Present(1, 0);
 	}
 }
-DXGI_SWAP_CHAIN_DESC convert(DXGI_SWAP_CHAIN_DESC1& sd1,HWND hwnd) { 
-	DXGI_SWAP_CHAIN_DESC sd = {};
-	sd.BufferDesc.Width = sd1.Width;
-	sd.BufferDesc.Height = sd1.Height;
-	sd.BufferDesc.RefreshRate.Numerator = 60;   // set your desired refresh rate
-	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.BufferDesc.Format = sd1.Format;
-	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	sd.SampleDesc.Count = sd1.SampleDesc.Count;
-	sd.SampleDesc.Quality = sd1.SampleDesc.Quality;
-	sd.BufferUsage = sd1.BufferUsage;
-	sd.BufferCount = sd1.BufferCount;
-	sd.OutputWindow = hwnd;
-	sd.Windowed = TRUE;
-	sd.SwapEffect = sd1.SwapEffect;
-	sd.Flags = sd1.Flags;
-	return sd;
-}
+
 bool DeviceResources::_CreateSwapChain() {
 	const RECT& hostWndRect = App::Get().GetHostWndRect();
 	const Config& config = App::Get().GetConfig();
+	 
+	DXGI_SWAP_CHAIN_DESC sd = {};
 
-	DXGI_SWAP_CHAIN_DESC1 sd = {};
-	sd.Width = hostWndRect.right - hostWndRect.left;
-	sd.Height = hostWndRect.bottom - hostWndRect.top;
-	sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	sd.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
+	sd.BufferDesc.Width = hostWndRect.right - hostWndRect.left;
+	sd.BufferDesc.Height = hostWndRect.bottom - hostWndRect.top;
+	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	sd.BufferDesc.RefreshRate.Numerator = 60;
+	sd.BufferDesc.RefreshRate.Denominator = 1;
+	sd.BufferUsage = DXGI_USAGE_UNORDERED_ACCESS | DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	sd.OutputWindow = App::Get().GetHwndHost();
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	sd.BufferCount= (config.IsDisableLowLatency() || config.IsDisableVSync()) ? 3 : 2;
+	sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
-	sd.Scaling = DXGI_SCALING_NONE;
-	sd.BufferUsage = DXGI_USAGE_UNORDERED_ACCESS | DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.BufferCount = (config.IsDisableLowLatency() || config.IsDisableVSync()) ? 3 : 2;
-	// 使用 DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL 而不是 DXGI_SWAP_EFFECT_FLIP_DISCARD
-	// 不渲染四周（可能存在的）黑边，因此必须保证交换链缓冲区不被改变
-	// 否则将不得不在每帧渲染前清空后缓冲区，这个操作在一些显卡上比较耗时
-	sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-	// 只要显卡支持始终启用 DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING
-	sd.Flags = (_supportTearing ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0)
-		| DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT;
-	 
-	auto sd0 = convert(sd, App::Get().GetHwndHost());
-	// Now you can use sd instead of sd1 in your CreateSwapChain call
-
+	sd.Windowed = TRUE;
 
 	winrt::com_ptr<IDXGISwapChain> dxgiSwapChain = nullptr;
 	 
 	HRESULT hr = _dxgiFactory->CreateSwapChain(
 		_d3dDevice.get(),
-		&sd0,
+		&sd,
 		dxgiSwapChain.put()
 	);
 
@@ -344,20 +320,20 @@ bool DeviceResources::_CreateSwapChain() {
 		return false;
 	}*/
 
-	_swapChain = dxgiSwapChain.try_as<IDXGISwapChain4>();
+	_swapChain = dxgiSwapChain.try_as<IDXGISwapChain>(); //dxgiSwapChain.try_as<IDXGISwapChain4>();
 	if (!_swapChain) {
 		Logger::Get().Error("获取 IDXGISwapChain2 失败");
 		return false;
 	}
 
 	// 关闭低延迟模式或关闭垂直同步时将最大延迟设为 2 以使 CPU 和 GPU 并行执行
-	_swapChain->SetMaximumFrameLatency(config.IsDisableLowLatency() || config.IsDisableVSync() ? 2 : 1);
+	//_swapChain->SetMaximumFrameLatency(config.IsDisableLowLatency() || config.IsDisableVSync() ? 2 : 1);
 
-	_frameLatencyWaitableObject.reset(_swapChain->GetFrameLatencyWaitableObject());
-	if (!_frameLatencyWaitableObject) {
-		Logger::Get().Error("GetFrameLatencyWaitableObject 失败");
-		return false;
-	}
+	//_frameLatencyWaitableObject.reset(_swapChain->GetFrameLatencyWaitableObject());
+	//if (!_frameLatencyWaitableObject) {
+	//	Logger::Get().Error("GetFrameLatencyWaitableObject 失败");
+	//	return false;
+	//}
 
 	hr = _dxgiFactory->MakeWindowAssociation(App::Get().GetHwndHost(), DXGI_MWA_NO_ALT_ENTER);
 	if (FAILED(hr)) {

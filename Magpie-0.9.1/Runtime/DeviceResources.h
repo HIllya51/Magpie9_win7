@@ -37,7 +37,7 @@ public:
 	ID3D11Device* GetD3DDevice() const noexcept { return _d3dDevice.get(); }
 	D3D_FEATURE_LEVEL GetFeatureLevel() const noexcept { return _featureLevel; }
 	ID3D11DeviceContext* GetD3DDC() const noexcept { return _d3dDC.get(); }
-	IDXGISwapChain4* GetSwapChain() const noexcept { return _swapChain.get(); };
+	IDXGISwapChain* GetSwapChain() const noexcept { return _swapChain.get(); };
 	ID3D11Texture2D* GetBackBuffer() const noexcept { return _backBuffer.get(); }
 	IDXGIFactory1* GetDXGIFactory() const noexcept { return _dxgiFactory.get(); }
 	IDXGIDevice1* GetDXGIDevice() const noexcept { return _dxgiDevice.get(); }
@@ -52,7 +52,7 @@ private:
 
 	winrt::com_ptr<IDXGIFactory1> _dxgiFactory;
 	winrt::com_ptr<IDXGIDevice1> _dxgiDevice;
-	winrt::com_ptr<IDXGISwapChain4> _swapChain;
+	winrt::com_ptr<IDXGISwapChain> _swapChain;
 	winrt::com_ptr<IDXGIAdapter1> _graphicsAdapter;
 	winrt::com_ptr<ID3D11Device> _d3dDevice;
 	winrt::com_ptr<ID3D11DeviceContext> _d3dDC;
