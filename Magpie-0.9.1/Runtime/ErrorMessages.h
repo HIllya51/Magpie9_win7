@@ -9,4 +9,5 @@ struct ErrorMessages {
 	static constexpr const char* SRC_TOO_LARGE = "Msg_Error_Src_Too_Large";
 	static constexpr const char* FAILED_TO_CROP = "Msg_Error_Failed_To_Crop";
 	static constexpr const char* FAILED_TO_CAPTURE = "Msg_Error_Failed_To_Capture";
+	static constexpr const char* win7unsupportGraphicsCapture = "win7unsupportGraphicsCapture";
 };

@@ -75,7 +75,7 @@ static winrt::com_ptr<IDXGIAdapter1> ObtainGraphicsAdapter(IDXGIFactory1* dxgiFa
 			return adapter.try_as<IDXGIAdapter1>();
 		}
 		else {
-			Logger::Get().Error(fmt::format("ObtainGraphicsAdapter:{}", hr));
+			Logger::Get().Error(fmt::format("ObtainGraphicsAdapter_D3D11CreateDevice:{}", hr));
 		}
 	}
 
@@ -285,7 +285,7 @@ bool DeviceResources::_CreateSwapChain() {
 	sd.OutputWindow = App::Get().GetHwndHost();
 	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	sd.BufferCount= (config.IsDisableLowLatency() || config.IsDisableVSync()) ? 3 : 2;
-	sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+	//sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; !!!!必须注释掉
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = TRUE;

@@ -15,7 +15,8 @@ using namespace Windows::Foundation::Metadata;
 
 
 bool GraphicsCaptureFrameSource::Initialize() {
-	MessageBoxW(0, L"Win7不支持GraphicsCapture！", L"", 0);
+	Logger::Get().Error("Win7不支持GraphicsCapture！");
+	App::Get().SetErrorMsg(ErrorMessages::FAILED_TO_CAPTURE);
 	return false;
 	/*
 	if (!FrameSourceBase::Initialize()) {
