@@ -91,6 +91,7 @@ API_DECLSPEC const char* WINAPI Run(
 	UINT cropRight,
 	UINT cropBottom
 ) {
+	captureMode = 2;
 	Logger& logger = Logger::Get();
 
 	if (!hwndSrc || !IsWindow(hwndSrc)) {

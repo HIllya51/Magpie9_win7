@@ -424,8 +424,8 @@ bool DeviceResources::GetUnorderedAccessView(ID3D11Texture2D* texture, ID3D11Uno
 
 bool DeviceResources::CompileShader(std::string_view hlsl, const char* entryPoint, ID3DBlob** blob, const char* sourceName, ID3DInclude* include, const std::vector<std::pair<std::string, std::string>>& macros) {
 	winrt::com_ptr<ID3DBlob> errorMsgs = nullptr;
-
-	UINT flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_ALL_RESOURCES_BOUND;
+	 
+	UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;// | D3DCOMPILE_ALL_RESOURCES_BOUND;
 	if (App::Get().GetConfig().IsTreatWarningsAsErrors()) {
 		flags |= D3DCOMPILE_WARNINGS_ARE_ERRORS;
 	}
