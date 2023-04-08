@@ -200,7 +200,8 @@ bool CheckForeground(HWND hwndForeground) {
 
 	// 排除桌面窗口和 Alt+Tab 窗口
 	if (!std::wcscmp(className, L"WorkerW") || !std::wcscmp(className, L"ForegroundStaging") ||
-		!std::wcscmp(className, L"MultitaskingViewFrame") || !std::wcscmp(className, L"XamlExplorerHostIslandWindow")
+		!std::wcscmp(className, L"MultitaskingViewFrame") || !std::wcscmp(className, L"XamlExplorerHostIslandWindow") ||
+		!std::wcscmp(className, L"Qt5152QWindowToolSaveBits") || !std::wcscmp(className, L"Qt5152QWindowIcon")
 	) {
 		return true;
 	}
