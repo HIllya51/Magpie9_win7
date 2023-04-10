@@ -362,7 +362,7 @@ namespace Magpie {
 					Settings.Default.Hotkey,
 					cbbScaleMode.SelectedItem?.ToString(),
 					((ComboBoxItem)cbbCaptureMethod.SelectedItem)?.Content.ToString()
-				).Substring(0, 63); // .NET versions before .NET 6 only support a maximum of 63 characters here.
+				).Take(63).ToString(); // .NET versions before .NET 6 only support a maximum of 63 characters here.
 
 				Hide();
 				notifyIcon.Visible = true;
