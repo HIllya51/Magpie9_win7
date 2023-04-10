@@ -357,12 +357,14 @@ namespace Magpie {
 		private void Window_StateChanged(object sender, EventArgs e) {
 			if (WindowState == WindowState.Minimized) {
 				// 更新文字提示
-				notifyIcon.Text = string.Format(
+				string text = string.Format(
 					Properties.Resources.UI_SysTray_Text,
 					Settings.Default.Hotkey,
 					cbbScaleMode.SelectedItem?.ToString(),
 					((ComboBoxItem)cbbCaptureMethod.SelectedItem)?.Content.ToString()
-				).Take(63).ToString(); // .NET versions before .NET 6 only support a maximum of 63 characters here.
+				);
+				// .NET versions before .NET 6 only support a maximum of 63 characters here.
+				notifyIcon.Text = text.Substring(0, Math.Min(text.Length, 63)); 
 
 				Hide();
 				notifyIcon.Visible = true;
