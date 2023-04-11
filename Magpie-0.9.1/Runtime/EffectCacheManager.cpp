@@ -18,7 +18,7 @@ static constexpr const size_t MAX_CACHE_COUNT = 128;
 
 // 缓存版本
 // 当缓存文件结构有更改时更新它，使旧缓存失效
-static constexpr const UINT CACHE_VERSION = 8;
+static constexpr const UINT CACHE_VERSION = 9;
 
 // 缓存的压缩等级
 static constexpr const int CACHE_COMPRESSION_LEVEL = 1;
@@ -266,8 +266,8 @@ void EffectCacheManager::Save(std::string_view effectName, std::string_view hash
 		}
 	} else {
 		// 删除所有该效果（flags 相同）的缓存
-		std::wregex regex(fmt::format(L"^{}_{:02x}[0-9,a-f]{{{}}}$", StrUtils::UTF8ToUTF16(effectName), desc.flags,
-				Utils::Hasher::Get().GetHashLength() * 2), std::wregex::optimize | std::wregex::nosubs);
+		std::wregex regex(fmt::format(L"^{}_{:02x}[0-9,a-f]{{16}}$", StrUtils::UTF8ToUTF16(effectName), desc.flags),
+			std::wregex::optimize | std::wregex::nosubs);
 
 		WIN32_FIND_DATA findData{};
 		HANDLE hFind = Utils::SafeHandle(FindFirstFileEx(StrUtils::ConcatW(CACHE_DIR, L"\\*").c_str(),
@@ -305,11 +305,31 @@ void EffectCacheManager::Save(std::string_view effectName, std::string_view hash
 	Logger::Get().Info(StrUtils::Concat("已保存缓存 ", StrUtils::UTF16ToUTF8(cacheFileName)));
 }
 
+static std::string HexHash(std::span<const BYTE> data) {
+	uint64_t hashBytes = Utils::HashData(data);
+
+	static char oct2Hex[16] = {
+		'0','1','2','3','4','5','6','7',
+		'8','9','a','b','c','d','e','f'
+	};
+
+	std::string result(16, 0);
+	char* pResult = &result[0];
+
+	BYTE* b = (BYTE*)&hashBytes;
+	for (int i = 0; i < 8; ++i) {
+		*pResult++ = oct2Hex[(*b >> 4) & 0xf];
+		*pResult++ = oct2Hex[*b & 0xf];
+		++b;
+	}
+
+	return result;
+}
+
 std::string EffectCacheManager::GetHash(
 	std::string_view source,
 	const std::map<std::string, std::variant<float, int>>* inlineParams
 ) {
-	return "hello";
 	std::string str;
 	str.reserve(source.size() + 128);
 	str = source;
@@ -325,17 +345,10 @@ std::string EffectCacheManager::GetHash(
 		}
 	}
 
-	std::vector<BYTE> hashBytes;
-	if (!Utils::Hasher::Get().Hash(std::span((const BYTE*)source.data(), source.size()), hashBytes)) {
-		Logger::Get().Error("计算 hash 失败");
-		return "";
-	}
-
-	return Utils::Bin2Hex(hashBytes);
+	return HexHash(std::span((const BYTE*)source.data(), source.size()));
 }
 
 std::string EffectCacheManager::GetHash(std::string& source, const std::map<std::string, std::variant<float, int>>* inlineParams) {
-	return "hello";
 	size_t originSize = source.size();
 
 	source.reserve(originSize + 128);
@@ -351,13 +364,7 @@ std::string EffectCacheManager::GetHash(std::string& source, const std::map<std:
 		}
 	}
 
-	std::vector<BYTE> hashBytes;
-	bool success = Utils::Hasher::Get().Hash(std::span((const BYTE*)source.data(), source.size()), hashBytes);
-	if (!success) {
-		Logger::Get().Error("计算 hash 失败");
-	}
-
+	std::string result = HexHash(std::span((const BYTE*)source.data(), source.size()));
 	source.resize(originSize);
-
-	return success ? Utils::Bin2Hex(hashBytes) : "";
+	return result;
 }

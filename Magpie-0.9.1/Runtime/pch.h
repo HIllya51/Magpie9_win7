@@ -40,7 +40,6 @@
 
 #include <windows.h>
 #include <windowsx.h>
-#include <wrl/client.h>
 #include <dwmapi.h>
 #include <profileapi.h>
 #include <psapi.h>
@@ -61,8 +60,8 @@
 #include <span>
 
 // C++/WinRT 头文件
+#include <Unknwn.h>
 #include <winrt/base.h>
-#include <winrt/Windows.Foundation.h>
 
 // fmt
 #include <fmt/format.h>
@@ -75,7 +74,6 @@
 
 
 #pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "windowsapp")
 #pragma comment(lib, "dwmapi.lib")
 #pragma comment(lib, "psapi.lib")
 

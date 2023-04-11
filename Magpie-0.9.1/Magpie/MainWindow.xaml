@@ -55,28 +55,13 @@
             <ComboBox Name="cbbScaleMode" Grid.Row="0" Margin="5,20,0,0" />
 
             <Label Style="{StaticResource Col0}" Content="{x:Static props:Resources.UI_Main_Capture_Method}" Grid.Row="1" VerticalAlignment="Top" Margin="0,15,0,0" Padding="0,5,5,5"/>
-            <ComboBox Name="cbbCaptureMethod" Grid.Row="1" Margin="5,15,0,0">
-                <ComboBoxItem Content="Graphics Capture">
-                    <ComboBoxItem.Tag>
-                        <sys:UInt32>0</sys:UInt32>
-                    </ComboBoxItem.Tag>
-                </ComboBoxItem>
-                <ComboBoxItem Content="Desktop Duplication">
-                    <ComboBoxItem.Tag>
-                        <sys:UInt32>1</sys:UInt32>
-                    </ComboBoxItem.Tag>
-                </ComboBoxItem>
-                <ComboBoxItem Content="GDI">
-                    <ComboBoxItem.Tag>
-                        <sys:UInt32>2</sys:UInt32>
-                    </ComboBoxItem.Tag>
-                </ComboBoxItem>
-                <ComboBoxItem Content="DwmSharedSurface">
-                    <ComboBoxItem.Tag>
-                        <sys:UInt32>3</sys:UInt32>
-                    </ComboBoxItem.Tag>
-                </ComboBoxItem>
-            </ComboBox>
+			<ComboBox Name="cbbCaptureMethod" Grid.Row="1" Margin="5,15,0,0">
+				<ComboBoxItem Content="GDI">
+					<ComboBoxItem.Tag>
+						<sys:UInt32>0</sys:UInt32>
+					</ComboBoxItem.Tag>
+				</ComboBoxItem>
+			</ComboBox>
         </Grid>
 
         <Grid x:Name="gridCurWnd" Margin="0,10,0,0" Visibility="Collapsed">

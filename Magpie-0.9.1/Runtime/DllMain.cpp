@@ -68,12 +68,7 @@ API_DECLSPEC BOOL WINAPI Initialize(
 	if (!App::Get().Initialize(hInst)) {
 		return FALSE;
 	}
-	/*
-	// 初始化 Hasher
-	if (!Utils::Hasher::Get().Initialize()) {
-		return FALSE;
-	}
-	*/
+
 	return TRUE;
 }
 
@@ -91,7 +86,6 @@ API_DECLSPEC const char* WINAPI Run(
 	UINT cropRight,
 	UINT cropBottom
 ) {
-	captureMode = 2;
 	Logger& logger = Logger::Get();
 
 	if (!hwndSrc || !IsWindow(hwndSrc)) {
