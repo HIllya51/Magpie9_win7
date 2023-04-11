@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "App.h"
 #include "Utils.h"
-#include "GraphicsCaptureFrameSource.h"
 #include "GDIFrameSource.h"
-#include "DwmSharedSurfaceFrameSource.h"
-#include "DesktopDuplicationFrameSource.h"
 #include "ExclModeHack.h"
 #include "Renderer.h"
 #include "DeviceResources.h"
@@ -329,16 +326,7 @@ bool App::_CreateHostWnd() {
 bool App::_InitFrameSource(int captureMode) {
 	switch (captureMode) {
 	case 0:
-		_frameSource.reset(new GraphicsCaptureFrameSource());
-		break;
-	case 1:
-		_frameSource.reset(new DesktopDuplicationFrameSource());
-		break;
-	case 2:
 		_frameSource.reset(new GDIFrameSource());
-		break;
-	case 3:
-		_frameSource.reset(new DwmSharedSurfaceFrameSource());
 		break;
 	default:
 		Logger::Get().Critical("未知的捕获模式");

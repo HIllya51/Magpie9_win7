@@ -46,12 +46,8 @@
         </StackPanel>
         
         <StackPanel x:Name="spDebugging" Margin="0,20,0,0">
-            <Label Content="{x:Static props:Resources.UI_Options_Advanced_Debugging}" FontWeight="Bold" Padding="0" FontSize="15" />
-            <CheckBox x:Name="ckbShowAllCaptureMethods"
-                      Content="{x:Static props:Resources.UI_Options_Advanced_Show_All_Capture_Methods}"
-                      Margin="0,10,0,0"
-                      IsChecked="{Binding Source={x:Static props:Settings.Default},Path=DebugShowAllCaptureMethods,Mode=TwoWay}" />
-            <CheckBox Content="{x:Static props:Resources.UI_Options_Advanced_Breakpoint_Mode}"
+			<Label Content="{x:Static props:Resources.UI_Options_Advanced_Debugging}" FontWeight="Bold" Padding="0" FontSize="15" />
+			<CheckBox Content="{x:Static props:Resources.UI_Options_Advanced_Breakpoint_Mode}"
                       Margin="0,15,0,0"
                       IsChecked="{Binding Source={x:Static props:Settings.Default},Path=DebugBreakpointMode,Mode=TwoWay}" />
             <CheckBox Content="{x:Static props:Resources.UI_Options_Advanced_Disable_Effect_Cache}"

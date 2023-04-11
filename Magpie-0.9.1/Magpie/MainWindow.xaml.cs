@@ -83,17 +83,6 @@ namespace Magpie {
 				Settings.Default.ScaleMode = 0;
 			}
 			cbbScaleMode.SelectedIndex = (int)Settings.Default.ScaleMode;
-
-			ShowAllCaptureMethods(Settings.Default.DebugShowAllCaptureMethods);
-
-			//if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 19041)) {
-			//	// Desktop Duplication 要求 v2004
-			//	cbbCaptureMethod.Items.RemoveAt(1);
-			//	if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 18362)) {
-			//		// Graphics Capture 要求 v1903
-			//		cbbCaptureMethod.Items.RemoveAt(0);
-			//	}
-			//}
 			
 			// 捕获模式选择项对应的值存在 Tag 属性里
 			bool found = false;
@@ -390,10 +379,6 @@ namespace Magpie {
 			Settings.Default.Save();
 		}
 
-		public void ShowAllCaptureMethods(bool isShow) {
-			_ = isShow;
-			_ = this;
-		}
 		private bool? isLightTheme = null;
 
 		private void CheckOSTheme() {

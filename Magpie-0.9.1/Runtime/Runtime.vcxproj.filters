@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GraphicsCaptureFrameSource.cpp">
-      <Filter>捕获</Filter>
-    </ClCompile>
-    <ClCompile Include="DwmSharedSurfaceFrameSource.cpp">
-      <Filter>捕获</Filter>
-    </ClCompile>
     <ClCompile Include="GDIFrameSource.cpp">
       <Filter>捕获</Filter>
     </ClCompile>
@@ -35,9 +29,6 @@
       <Filter>渲染</Filter>
     </ClCompile>
     <ClCompile Include="FrameSourceBase.cpp">
-      <Filter>捕获</Filter>
-    </ClCompile>
-    <ClCompile Include="DesktopDuplicationFrameSource.cpp">
       <Filter>捕获</Filter>
     </ClCompile>
     <ClCompile Include="ExclModeHack.cpp">
@@ -75,12 +66,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GraphicsCaptureFrameSource.h">
-      <Filter>捕获</Filter>
-    </ClInclude>
-    <ClInclude Include="DwmSharedSurfaceFrameSource.h">
-      <Filter>捕获</Filter>
-    </ClInclude>
     <ClInclude Include="FrameSourceBase.h">
       <Filter>捕获</Filter>
     </ClInclude>
@@ -116,9 +101,6 @@
     </ClInclude>
     <ClInclude Include="EffectCompiler.h">
       <Filter>渲染</Filter>
-    </ClInclude>
-    <ClInclude Include="DesktopDuplicationFrameSource.h">
-      <Filter>捕获</Filter>
     </ClInclude>
     <ClInclude Include="ExclModeHack.h">
       <Filter>应用程序</Filter>
